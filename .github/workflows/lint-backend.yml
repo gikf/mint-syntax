@@ -1,0 +1,28 @@
+name: Lint backend
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types:
+      - opened
+      - synchronize
+
+jobs:
+  lint-backend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install ruff
+        uses: astral-sh/ruff-action@v3.4.0
+        with:
+          # Arguments passed to Ruff. Use `ruff --help` to see available options. Defaults to `check`.
+          args: '--version'
+          # Source to run Ruff. Defaults to the current directory.
+          src: "./backend/"
+          # Path to a pyproject.toml or requirements.txt file to read the version from.
+          version-file: "./backend/pyproject.toml"
+      - run: ruff check --diff
+      - run: ruff format --diff
