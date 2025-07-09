@@ -1,34 +1,54 @@
-import { useState } from 'react';
-import reactLogo from './assets/react.svg';
-import viteLogo from '/vite.svg';
+import { useEffect, useState } from 'react';
+import { NavLink } from 'react-router';
 import './App.css';
 
 function App() {
   const [count, setCount] = useState(0);
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch(
+          import.meta.env.VITE_API_LOCATION + '/me',
+          {
+            headers: {
+              Authorization: `Bearer ${sessionStorage.getItem('access_token')}`,
+            },
+          }
+        );
+        setLoading(false);
+        if (!response.ok) {
+          setError(true);
+          return;
+        }
+        const data = await response.json();
+        console.log(data);
+        setData(JSON.stringify(data));
+      } catch (e) {
+        console.log('error', e);
+      }
+    };
+    fetchData();
+  }, []);
 
   return (
-    <>
-      <div>
-        <a href='https://vite.dev' target='_blank'>
-          <img src={viteLogo} className='logo' alt='Vite logo' />
-        </a>
-        <a href='https://react.dev' target='_blank'>
-          <img src={reactLogo} className='logo react' alt='React logo' />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className='card'>
-        <button onClick={() => setCount(count => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className='read-the-docs'>
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <div className='card'>
+      <NavLink to='/register'>Register</NavLink>
+      <NavLink to='/login'>Login</NavLink>
+      <button
+        class='animated-button'
+        onClick={() => setCount(count => count + 1)}
+      >
+        count is {count}
+      </button>
+      {loading && 'loading...'}
+      {error && 'error!'}
+      {data ? data : ''}
+    </div>
   );
 }
 
