@@ -926,6 +926,39 @@ body {
   min-height: 32px;
 }
 
+.not-found-button {
+  display: inline-block;
+  padding: var(--animated-button-padding-y) var(--animated-button-padding-x);
+  background-color: var(--palette-main-brand-green);
+  color: var(--palette-accent-white);
+  text-decoration: none;
+  border-radius: var(--border-radius-pill);
+  font-size: var(--animated-button-font-size);
+  transition:
+    background-color 0.3s ease-in-out,
+    transform 0.3s ease-in-out;
+}
+
+.not-found-button:hover {
+  background-color: var(--palette-dark-contrast-green);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.dev-indicator {
+  position: fixed;
+  bottom: var(--spacing-sm);
+  left: var(--spacing-sm);
+  background: rgba(112, 214, 163, 0.2);
+  color: var(--palette-dark-contrast-green);
+  border: var(--border-width-thin) solid var(--palette-main-brand-green);
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--border-radius-sm);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  z-index: 1000;
+}
+
 @media (min-width: 768px) {
   .header-banner-content {
     align-items: center;
