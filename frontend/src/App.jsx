@@ -8,6 +8,7 @@ import HelpPage from './components/HelpPage';
 import LoginPage from './pages/LoginPage';
 import ForgotPassword from './pages/ForgotPassword';
 import RegisterPage from './pages/RegisterPage';
+import SearchPage from './pages/SearchPage';
 
 import { IdeaAddPage, IdeaEditPage, IdeaPage, IdeasPage } from './pages/Ideas';
 import './styles.css';
@@ -39,6 +40,7 @@ function App() {
           <Routes>
             <Route path='' element={<LandingPage />} />
             <Route path='help' element={<HelpPage />} />
+            <Route path='search' element={<SearchPage />} />
             <Route path='login' element={<LoginPage />} />
             <Route path='forgot-password' element={<ForgotPassword />} />
             <Route path='register' element={<RegisterPage />} />
