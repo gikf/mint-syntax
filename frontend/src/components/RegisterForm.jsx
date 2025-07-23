@@ -54,19 +54,19 @@ export function RegisterForm({ redirect_to = '/' }) {
     register,
     getValues,
   } = useForm();
-  const { isLogged, login } = useUser();
+  const { isLogged } = useUser();
   const navigate = useNavigate();
 
   const { error, response, data, fetchFromApi } = useApi({ method: 'POST' });
 
   useEffect(() => {
     if (data && !error) {
-      login(data);
+      navigate('/login');
     }
     if (error) {
       console.log('Error:', error);
     }
-  }, [response, data, error, login]);
+  }, [response, data, error, navigate]);
 
   useEffect(() => {
     if (isLogged && redirect_to) {
