@@ -49,11 +49,12 @@ const PasswordIcon = () => {
 export function RegisterForm({ redirect_to = '/' }) {
   const formRef = useRef();
   const {
-    formState: { errors, isSubmitting, isValid },
+    formState: { errors, isSubmitting },
     handleSubmit,
     register,
     getValues,
-  } = useForm();
+  } = useForm({ mode: 'onTouched' });
+
   const { isLogged } = useUser();
   const navigate = useNavigate();
 
@@ -86,7 +87,11 @@ export function RegisterForm({ redirect_to = '/' }) {
   };
 
   return (
-    <form ref={formRef} onSubmit={handleSubmit(onSubmit)}>
+    <form
+      ref={formRef}
+      onSubmit={handleSubmit(onSubmit)}
+      className='w-full max-w-md p-4 bg-white'
+    >
       <div className='form-group'>
         <label htmlFor='username' className='form-label'>
           Username: <span className='text-red-500'>*</span>
@@ -96,7 +101,7 @@ export function RegisterForm({ redirect_to = '/' }) {
           <input
             id='username'
             {...register('username', { required: true })}
-            type='Text'
+            type='text'
             placeholder='Username'
             className='input-validator'
             aria-invalid={!!errors.username}
@@ -104,13 +109,13 @@ export function RegisterForm({ redirect_to = '/' }) {
         </label>
       </div>
       {errors.username?.type === 'required' ? (
-        <p role='alert' className='text-error'>
+        <p role='alert' className='text-error text-xs mt-0.5'>
           The field "Username" is required.
         </p>
       ) : (
         error &&
         response.status === 409 && (
-          <p role='alert' className='text-error'>
+          <p role='alert' className='text-error text-xs mt-0.5'>
             This username is already in use.
           </p>
         )
@@ -125,7 +130,7 @@ export function RegisterForm({ redirect_to = '/' }) {
           <input
             id='name'
             {...register('name', { required: true })}
-            type='Text'
+            type='text'
             placeholder='Name'
             className='input-validator'
             aria-invalid={!!errors.name}
@@ -133,7 +138,7 @@ export function RegisterForm({ redirect_to = '/' }) {
         </label>
       </div>
       {errors.name?.type === 'required' && (
-        <p role='alert' className='text-error'>
+        <p role='alert' className='text-error text-xs mt-0.5'>
           The field "Name" is required.
         </p>
       )}
@@ -147,7 +152,7 @@ export function RegisterForm({ redirect_to = '/' }) {
           <input
             id='password'
             {...register('password', { required: true, minLength: 8 })}
-            type='Password'
+            type='password'
             placeholder='Password'
             className='input-validator'
             aria-invalid={!!errors.password}
@@ -155,13 +160,13 @@ export function RegisterForm({ redirect_to = '/' }) {
         </label>
       </div>
       {errors.password?.type === 'required' ? (
-        <p role='alert' className='text-error'>
+        <p role='alert' className='text-error text-xs mt-0.5'>
           The field "Password" is required.
         </p>
       ) : (
         errors.password?.type === 'minLength' && (
-          <p role='alert' className='text-error'>
-            Password needs to be at least 8 characters long.
+          <p role='alert' className='text-error text-xs mt-0.5'>
+            The password needs to be at least 8 characters long.
           </p>
         )
       )}
@@ -181,24 +186,25 @@ export function RegisterForm({ redirect_to = '/' }) {
             type='password'
             placeholder='Password'
             title='Must match the password entered in the previous input field'
+            className='input-validator'
             aria-invalid={!!errors.repeatPassword}
           />
         </label>
       </div>
       {errors.repeatPassword?.type === 'required' ? (
-        <p role='alert' className='text-error'>
+        <p role='alert' className='text-error text-xs mt-0.5'>
           The field "Repeat Password" is required.
         </p>
       ) : (
         errors.repeatPassword?.type === 'validate' && (
-          <p role='alert' className='text-error'>
+          <p role='alert' className='text-error text-xs mt-0.5'>
             Both passwords need to match.
           </p>
         )
       )}
 
       {error && response.status !== 409 && (
-        <div className='text-error text-center'>
+        <div role='alert' className='text-error text-center text-xs mt-0.5'>
           Something went wrong, please try again later.
         </div>
       )}
@@ -206,7 +212,7 @@ export function RegisterForm({ redirect_to = '/' }) {
       <div className='flex justify-center'>
         <button
           className='my-1 animated-button'
-          {...((isSubmitting || !isValid) && { disabled: 'disabled' })}
+          {...(isSubmitting && { disabled: 'disabled' })}
         >
           Register
         </button>
