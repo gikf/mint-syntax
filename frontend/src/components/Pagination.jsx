@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router';
 
 export const Pagination = ({
   numberOfPages,
@@ -8,6 +9,11 @@ export const Pagination = ({
 }) => {
   const [currentPage, setCurPage] = useState(initialPage);
   const pages = [...Array(numberOfPages).keys()];
+  const { page: paramPage = 1 } = useParams();
+
+  useEffect(() => {
+    setCurPage(parseInt(paramPage) - 1);
+  }, [paramPage]);
 
   const Href = ({ pageNo, text }) => {
     const pageUrl = getPageUrl(pageNo);
