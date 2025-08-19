@@ -1,0 +1,32 @@
+name: Test frontend (browser mode)
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types:
+      - opened
+      - synchronize
+
+jobs:
+  test-frontend-browser-mode:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [22]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+
+      - name: Install modules
+        run: npm install --prefix ./frontend
+
+      - name: Install playwright
+        run: npx --prefix ./frontend playwright install
+
+      - name: Run tests in browser mode
+        run: npm run test:browser --prefix ./frontend -- --browser.headless
